@@ -1,5 +1,5 @@
-# Install Node.js 18 for Next.js and Nest.js
-FROM node:18
+# Install Node.js 20 for Next.js
+FROM node:20
 
 # Set up working directory for Next.js application
 WORKDIR /frontend

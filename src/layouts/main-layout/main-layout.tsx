@@ -1,6 +1,6 @@
-import { Container } from "@chakra-ui/react";
-import MainHeader from "./header";
-import MainFooter from "./footer";
+import { Container } from '@chakra-ui/react';
+import MainHeader from './header';
+import MainFooter from './footer';
 
 type Props = { children: React.ReactNode };
 
