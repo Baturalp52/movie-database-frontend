@@ -37,6 +37,15 @@ axiosInstance.interceptors.response.use(
         title: 'Forbidden!',
         status: 'error',
       });
+    } else if (error.response?.status === 401) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+      }
+      standaloneToast({
+        title: 'Unauthorized!',
+        status: 'error',
+      });
     } else {
       standaloneToast({
         title: 'Error!',
