@@ -1,9 +1,9 @@
 import { createContext, useState } from 'react';
-import { UserType } from './user.type';
+import { UserType } from '../types/user.type';
 import AuthService from '@/services/auth/auth.service';
 import ProfileService from '@/services/profile/profile.service';
 
-export type UserContextType = {
+export type AuthContextType = {
   user: UserType | null;
   isInitialized: boolean;
   isLoading: boolean;
@@ -17,7 +17,7 @@ export type UserContextType = {
   init: () => Promise<void>;
 };
 
-const UserContext = createContext<UserContextType>({
+const AuthContext = createContext<AuthContextType>({
   user: null,
   isInitialized: false,
   isLoading: false,
@@ -27,7 +27,7 @@ const UserContext = createContext<UserContextType>({
   init: async () => {},
 });
 
-export function UserProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserType | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -79,7 +79,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <UserContext.Provider
+    <AuthContext.Provider
       value={{
         user,
         isInitialized,
@@ -91,8 +91,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
-    </UserContext.Provider>
+    </AuthContext.Provider>
   );
 }
 
-export default UserContext;
+export default AuthContext;

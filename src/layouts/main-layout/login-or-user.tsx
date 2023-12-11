@@ -1,6 +1,6 @@
 'use client';
 
-import useUser from '@/hooks/use-user';
+import useAuth from '@/hooks/use-auth';
 import getCDNPath from '@/utils/get-cdn-path.util';
 import { ROUTES } from '@/utils/routes';
 import {
@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation';
 import NextLink from 'next/link';
 
 export default function LoginOrUser() {
-  const { user, isLoading, isInitialized, logout } = useUser();
+  const { user, isLoading, isInitialized, logout } = useAuth();
   const { refresh } = useRouter();
 
   if (!isInitialized) return null;
@@ -79,12 +79,12 @@ export default function LoginOrUser() {
         </Menu>
       ) : (
         <HStack>
-          <NextLink href={ROUTES.LOGIN} passHref>
+          <NextLink href={ROUTES.LOGIN} passHref legacyBehavior>
             <Button as="a" variant="ghost">
               Login
             </Button>
           </NextLink>
-          <NextLink href={ROUTES.SIGN_UP} passHref>
+          <NextLink href={ROUTES.SIGN_UP} passHref legacyBehavior>
             <Button as="a" variant="solid" colorScheme="orange">
               Signup
             </Button>

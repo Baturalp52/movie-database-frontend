@@ -4,6 +4,8 @@ import {
   withDefaultColorScheme,
   withDefaultSize,
   withDefaultVariant,
+  theme as baseTheme,
+  StyleFunctionProps,
 } from '@chakra-ui/react';
 
 export const theme = extendTheme(
@@ -13,6 +15,14 @@ export const theme = extendTheme(
       body: 'var(--font-rubik)',
     },
     components: {
+      Link: {
+        baseStyle: {
+          textDecoration: 'none',
+          _hover: {
+            textDecoration: 'none',
+          },
+        },
+      },
       Button: {
         variants: {
           ghost: {
@@ -21,6 +31,10 @@ export const theme = extendTheme(
               color: 'black',
             },
           },
+          rounded: (props: StyleFunctionProps) => ({
+            ...baseTheme.components?.Button?.variants?.solid(props),
+            borderRadius: 20,
+          }),
         },
       },
     },

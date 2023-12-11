@@ -1,4 +1,4 @@
-import { Container } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import MainHeader from './header';
 import MainFooter from './footer';
 
@@ -8,7 +8,9 @@ export default function MainLayout({ children }: Props) {
   return (
     <>
       <MainHeader />
-      <Container>{children}</Container>
+      <Box as="main" minH="100vh">
+        {children}
+      </Box>
       <MainFooter />
     </>
   );

@@ -1,14 +1,17 @@
-import { HStack, Text } from '@chakra-ui/react';
+import { BoxProps, HStack, Text } from '@chakra-ui/react';
 import Iconify from './iconify';
 
-export default function Logo() {
+type Props = BoxProps;
+
+export default function Logo({ color = 'white', ...props }: Props) {
   return (
     <HStack
-      color="white"
+      color={color}
       _hover={{
         textDecoration: 'none',
         userSelect: 'none',
       }}
+      {...props}
     >
       <Iconify icon="mingcute:movie-fill" boxSize={50} />
       <Text fontSize="2xl" fontWeight="bold">

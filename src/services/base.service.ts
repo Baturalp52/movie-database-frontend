@@ -11,7 +11,7 @@ type PaginationMeta = {
   total: number;
 };
 
-type Response<T = any> = {
+export type BaseResponse<T = any> = {
   success: boolean;
   data?: T | null;
   errorMessage?: string;
@@ -28,21 +28,21 @@ export default class BaseService {
 
   get<T = any>(url: string, config?: RequestConfig<T>) {
     url = join(this.subUrl, url);
-    return this.service.get<T, Response<T>>(url, config);
+    return this.service.get<T, BaseResponse<T>>(url, config);
   }
 
   post<T = any>(url: string, data?: any, config?: RequestConfig<T>) {
     url = join(this.subUrl, url);
-    return this.service.post<T, Response<T>>(url, data, config);
+    return this.service.post<T, BaseResponse<T>>(url, data, config);
   }
 
   put<T = any>(url: string, data?: any, config?: RequestConfig<T>) {
     url = join(this.subUrl, url);
-    return this.service.put<T, Response<T>>(url, data, config);
+    return this.service.put<T, BaseResponse<T>>(url, data, config);
   }
 
   delete<T = any>(url: string, config?: RequestConfig<T>) {
     url = join(this.subUrl, url);
-    return this.service.delete<T, Response<T>>(url, config);
+    return this.service.delete<T, BaseResponse<T>>(url, config);
   }
 }

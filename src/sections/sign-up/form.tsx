@@ -18,7 +18,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import useUser from '@/hooks/use-user';
+import useAuth from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -33,7 +33,7 @@ export default function SignUpForm() {
 
   const { push } = useRouter();
 
-  const { user, isInitialized, register } = useUser();
+  const { user, isInitialized, register } = useAuth();
   const methods = useForm<AuthRegisterRequestType>({
     mode: 'all',
     reValidateMode: 'onChange',

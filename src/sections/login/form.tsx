@@ -18,7 +18,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import useUser from '@/hooks/use-user';
+import useAuth from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -32,7 +32,7 @@ export default function LoginForm() {
 
   const { push } = useRouter();
 
-  const { user, isInitialized, login } = useUser();
+  const { user, isInitialized, login } = useAuth();
   const methods = useForm<AuthLoginRequestType>({
     mode: 'all',
     reValidateMode: 'onChange',

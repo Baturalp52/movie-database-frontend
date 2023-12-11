@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import Providers from './providers';
 import { fonts } from './fonts';
 import MainLayout from '@/layouts/main-layout';
+import 'slick-carousel/slick/slick.scss';
+import 'slick-carousel/slick/slick-theme.scss';
+import '@/styles/slick.scss';
 
 export const metadata: Metadata = {
   title: {
