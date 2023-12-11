@@ -5,6 +5,7 @@ import MainLayout from '@/layouts/main-layout';
 import 'slick-carousel/slick/slick.scss';
 import 'slick-carousel/slick/slick-theme.scss';
 import '@/styles/slick.scss';
+import 'cropperjs/dist/cropper.css';
 
 export const metadata: Metadata = {
   title: {

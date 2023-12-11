@@ -8,6 +8,7 @@ type UserAuthType = {
 };
 
 export type UserType = {
+  id: number;
   firstName: string;
   lastName: string;
   gender: GenderEnum;

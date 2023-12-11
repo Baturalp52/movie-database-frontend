@@ -2,30 +2,24 @@ import {
   Box,
   BoxProps,
   FormControl,
-  FormControlProps,
   FormErrorMessage,
   FormLabel,
-  Input,
-  InputProps,
+  Textarea,
+  TextareaProps,
 } from '@chakra-ui/react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 type Props = {
   name: string;
   label?: string;
-  type?: string;
-  placeholder?: string;
-  InputProps?: InputProps;
-  FormControlProps?: FormControlProps;
+  TextareaProps?: TextareaProps;
 } & BoxProps;
 
-export default function RHFInput({
+export default function RHFTextarea({
   name,
   label,
-  type = 'text',
   placeholder,
-  InputProps,
-  FormControlProps,
+  TextareaProps,
   ...props
 }: Props) {
   const { control } = useFormContext();
@@ -36,20 +30,19 @@ export default function RHFInput({
       name={name}
       render={({ field, fieldState }) => (
         <Box {...props}>
-          <FormControl isInvalid={fieldState?.invalid} {...FormControlProps}>
+          <FormControl isInvalid={fieldState?.invalid}>
             {label && (
               <FormLabel color={fieldState?.error ? 'red.500' : 'inherit'}>
                 {label}
               </FormLabel>
             )}
-            <Input
+            <Textarea
               id={name}
-              type={type}
-              placeholder={placeholder}
               isInvalid={fieldState?.invalid}
               color="black"
+              placeholder={placeholder}
               {...field}
-              {...InputProps}
+              {...TextareaProps}
             />
             {fieldState?.error && (
               <FormErrorMessage>{fieldState?.error?.message}</FormErrorMessage>

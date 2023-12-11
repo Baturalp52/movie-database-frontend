@@ -9,12 +9,12 @@ export type MovieType = {
   summary: string;
   releaseDate: string;
   posterPhotoFile: FileType;
+  originalLanguage: string;
   tagline?: string;
   certification?: CertificationEnum;
   releaseCountry?: string;
   runtime?: number;
   trailer?: string;
-  originalLanguage?: string;
   budget?: number;
   revenue?: number;
   rate?: number;

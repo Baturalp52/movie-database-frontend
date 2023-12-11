@@ -25,12 +25,14 @@ export const theme = extendTheme(
       },
       Button: {
         variants: {
-          ghost: {
+          ghost: (props: StyleFunctionProps) => ({
+            ...baseTheme.components?.Button?.variants?.ghost(props),
             color: 'white',
             _hover: {
-              color: 'black',
+              color: `${props.colorScheme}.600`,
+              background: `${props.colorScheme}.300`,
             },
-          },
+          }),
           rounded: (props: StyleFunctionProps) => ({
             ...baseTheme.components?.Button?.variants?.solid(props),
             borderRadius: 20,

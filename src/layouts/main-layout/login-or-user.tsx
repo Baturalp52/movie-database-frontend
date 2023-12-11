@@ -15,12 +15,10 @@ import {
   Skeleton,
   Text,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/navigation';
 import NextLink from 'next/link';
 
 export default function LoginOrUser() {
   const { user, isLoading, isInitialized, logout } = useAuth();
-  const { refresh } = useRouter();
 
   if (!isInitialized) return null;
 
@@ -59,7 +57,7 @@ export default function LoginOrUser() {
           <MenuList>
             <MenuItem
               as={Link}
-              href={ROUTES.PROFILE}
+              href={ROUTES.USER.DETAIL(user?.id)}
               _hover={{
                 textDecoration: 'none',
                 userSelect: 'none',
@@ -68,9 +66,19 @@ export default function LoginOrUser() {
               Profile
             </MenuItem>
             <MenuItem
+              as={Link}
+              href={ROUTES.SETTINGS.ROOT}
+              _hover={{
+                textDecoration: 'none',
+                userSelect: 'none',
+              }}
+            >
+              Settings
+            </MenuItem>
+            <MenuItem
               onClick={() => {
                 logout();
-                refresh();
+                window.location.reload();
               }}
             >
               Logout

@@ -6,7 +6,14 @@ import Iconify from '@/components/iconify';
 
 export default function MainHeader() {
   return (
-    <HStack backgroundColor="teal" padding={4} gap={4}>
+    <HStack
+      backgroundColor="teal"
+      padding={4}
+      gap={4}
+      position="sticky"
+      top={0}
+      zIndex={2}
+    >
       <Link
         href="/"
         _hover={{
