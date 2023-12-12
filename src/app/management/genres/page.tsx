@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: 'Management - Genres',
 };
 
-export default function ManagementGenreĞage() {
+export default function ManagementGenrePage() {
   return (
     <>
       <ManagementGenresMainSection />
