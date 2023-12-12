@@ -1,5 +1,7 @@
 'use client';
 
+import Iconify from '@/components/iconify';
+import { UserRoleEnum } from '@/enums/role.enum';
 import useAuth from '@/hooks/use-auth';
 import getCDNPath from '@/utils/get-cdn-path.util';
 import { ROUTES } from '@/utils/routes';
@@ -7,6 +9,7 @@ import {
   Avatar,
   Button,
   HStack,
+  IconButton,
   Link,
   Menu,
   MenuButton,
@@ -14,77 +17,96 @@ import {
   MenuList,
   Skeleton,
   Text,
+  Tooltip,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function LoginOrUser() {
   const { user, isLoading, isInitialized, logout } = useAuth();
+
+  const { push } = useRouter();
 
   if (!isInitialized) return null;
 
   return (
     <Skeleton isLoaded={!isLoading}>
       {user ? (
-        <Menu>
-          <MenuButton
-            as={Button}
-            variant="ghost"
-            _hover={{
-              backgroundColor: 'teal.500',
-            }}
-          >
-            <HStack>
-              <Avatar
-                size="sm"
-                name={
-                  user?.firstName && user?.lastName
-                    ? user?.firstName + ' ' + user?.lastName
-                    : user?.auth?.username
-                }
-                src={
-                  user?.profilePhotoFile?.path
-                    ? getCDNPath(user?.profilePhotoFile?.path)
-                    : ''
-                }
+        <>
+          {user?.role >= UserRoleEnum.EDITOR && (
+            <Tooltip label="Open Management">
+              <IconButton
+                colorScheme="orange"
+                variant="ghost"
+                onClick={() => {
+                  push(ROUTES.MANAGEMENT.ROOT);
+                }}
+                aria-label="add-new-movie"
+                icon={<Iconify icon="ic:round-dashboard" boxSize={10} />}
               />
-              <Text color="white">
-                {user?.firstName && user?.lastName
-                  ? user?.firstName + ' ' + user?.lastName
-                  : '@' + user?.auth?.username}
-              </Text>
-            </HStack>
-          </MenuButton>
-          <MenuList>
-            <MenuItem
-              as={Link}
-              href={ROUTES.USER.DETAIL(user?.id)}
+            </Tooltip>
+          )}
+          <Menu>
+            <MenuButton
+              as={Button}
+              variant="ghost"
               _hover={{
-                textDecoration: 'none',
-                userSelect: 'none',
+                backgroundColor: 'teal.500',
               }}
             >
-              Profile
-            </MenuItem>
-            <MenuItem
-              as={Link}
-              href={ROUTES.SETTINGS.ROOT}
-              _hover={{
-                textDecoration: 'none',
-                userSelect: 'none',
-              }}
-            >
-              Settings
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                logout();
-                window.location.reload();
-              }}
-            >
-              Logout
-            </MenuItem>
-          </MenuList>
-        </Menu>
+              <HStack>
+                <Avatar
+                  size="sm"
+                  name={
+                    user?.firstName && user?.lastName
+                      ? user?.firstName + ' ' + user?.lastName
+                      : user?.auth?.username
+                  }
+                  src={
+                    user?.profilePhotoFile?.path
+                      ? getCDNPath(user?.profilePhotoFile?.path)
+                      : ''
+                  }
+                />
+                <Text color="white">
+                  {user?.firstName && user?.lastName
+                    ? user?.firstName + ' ' + user?.lastName
+                    : '@' + user?.auth?.username}
+                </Text>
+              </HStack>
+            </MenuButton>
+            <MenuList>
+              <MenuItem
+                as={Link}
+                href={ROUTES.USER.DETAIL(user?.id)}
+                _hover={{
+                  textDecoration: 'none',
+                  userSelect: 'none',
+                }}
+              >
+                Profile
+              </MenuItem>
+              <MenuItem
+                as={Link}
+                href={ROUTES.SETTINGS.ROOT}
+                _hover={{
+                  textDecoration: 'none',
+                  userSelect: 'none',
+                }}
+              >
+                Settings
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  logout();
+                  window.location.reload();
+                }}
+              >
+                Logout
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </>
       ) : (
         <HStack>
           <NextLink href={ROUTES.LOGIN} passHref legacyBehavior>

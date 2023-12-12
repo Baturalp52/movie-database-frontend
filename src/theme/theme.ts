@@ -30,7 +30,7 @@ export const theme = extendTheme(
             color: 'white',
             _hover: {
               color: `${props.colorScheme}.600`,
-              background: `${props.colorScheme}.300`,
+              background: `${props.colorScheme}.200`,
             },
           }),
           rounded: (props: StyleFunctionProps) => ({

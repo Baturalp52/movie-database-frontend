@@ -10,10 +10,8 @@ export default function MainHeader() {
       backgroundColor="teal"
       padding={4}
       gap={4}
-      w="100%"
       position="sticky"
       top={0}
-      spacing={0}
       zIndex={2}
     >
       <Link

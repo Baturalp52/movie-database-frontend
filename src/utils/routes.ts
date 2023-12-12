@@ -10,4 +10,14 @@ export const ROUTES = {
   MOVIES: '/movies',
   PEOPLE: '/people',
   MOVIE: (movieId: number) => `/movie/${movieId}`,
+  MANAGEMENT: {
+    ROOT: '/management',
+    USERS: '/management/users',
+    MOVIES: '/management/movies',
+    MOVIE_REQUESTS: '/management/movie-requests',
+    PEOPLE: '/management/people',
+    GENRES: '/management/genres',
+    PERSON_TYPES: '/management/person-types',
+    SOCIAL_LINKS: '/management/social-links',
+  },
 };
