@@ -4,7 +4,7 @@ import { join } from 'path';
 
 type RequestConfig<T = any> = AxiosRequestConfig<T>;
 
-type PaginationMeta = {
+export type PaginationMeta = {
   page: number;
   size: number;
   totalPage: number;
