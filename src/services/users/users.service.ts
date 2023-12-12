@@ -12,7 +12,7 @@ class _UsersService extends BaseService {
   }
 
   searchAllUser(page = 1, size = 10, data?: UsersPostUserSearchRequestType) {
-    return this.post<UsersPostSearchUserResponseType[]>('search', data, {
+    return this.post<UsersPostSearchUserResponseType>('search', data, {
       params: {
         page,
         size,

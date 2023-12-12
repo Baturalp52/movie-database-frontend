@@ -2,7 +2,7 @@ import { UserRoleEnum } from '@/enums/role.enum';
 import { FileType } from '@/types/file.type';
 import { UserType } from '@/types/user.type';
 
-export type UsersPostSearchUserResponseType = {
+export type UsersPostSearchUser = {
   id: number;
   firstName: string;
   lastName: string;
@@ -10,6 +10,8 @@ export type UsersPostSearchUserResponseType = {
   profilePhotoFile: FileType;
   username: string;
 };
+
+export type UsersPostSearchUserResponseType = UsersPostSearchUser[];
 export type UsersPostUserSearchRequestType = {
   text: string;
 };

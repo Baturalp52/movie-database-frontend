@@ -21,36 +21,40 @@ import {
 import { useCallback, useState } from 'react';
 import useFetch from '@/hooks/use-fetch';
 import LoadingLogo from '@/components/loading-logo';
-import UserDrawer from './drawer';
-import { UsersPostSearchUser } from '@/services/users/users.type';
-import UsersService from '@/services/users/users.service';
+import PersonDrawer from './drawer';
 import Pagination from '@/components/pagination';
-import UserItem from './user-item';
+import PersonItem from './person-item';
 import Iconify from '@/components/iconify';
+import PersonsService from '@/services/persons/persons.service';
+import { PersonsPostSearchPersonType } from '@/services/persons/person.type';
 
-function ManagementUsersMainSection() {
+function ManagementPersonsMainSection() {
   const {
     isOpen: isDrawerOpen,
     onClose: onDrawerClose,
     onOpen: onDrawerOpen,
   } = useDisclosure();
-  const [drawerUser, setDrawerUser] = useState<UsersPostSearchUser | null>(
-    null,
-  );
+  const [drawerPersonId, setDrawerPersonId] = useState<number | null>(null);
 
   const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState('');
   const [searchInputText, setSearchInputText] = useState('');
 
-  const fetchUsers = useCallback(
-    async () => UsersService.searchAllUser(page, 12, { text: searchText }),
+  const fetchPersons = useCallback(
+    async () =>
+      PersonsService.postSearchPersons(page, 12, { text: searchText }),
     [page, searchText],
   );
 
-  const { data, meta, loading, refetch } = useFetch(fetchUsers);
+  const { data, meta, loading, refetch } = useFetch(fetchPersons);
 
-  const handleEditUser = (user: UsersPostSearchUser) => {
-    setDrawerUser(user);
+  const handleEditPerson = (person: PersonsPostSearchPersonType) => {
+    setDrawerPersonId(person.id);
+    onDrawerOpen();
+  };
+
+  const handleNewPerson = () => {
+    setDrawerPersonId(null);
     onDrawerOpen();
   };
 
@@ -64,7 +68,13 @@ function ManagementUsersMainSection() {
     );
   return (
     <>
-      <Heading size="xl">Users</Heading>
+      <HStack w="100%" justifyContent="space-between">
+        <Heading size="xl">People</Heading>
+        <Button onClick={handleNewPerson}>
+          <Iconify icon="mdi:plus" boxSize={6} />
+          Add Person
+        </Button>
+      </HStack>
       <FormControl mt={4} w="100%">
         <InputGroup>
           <Input
@@ -72,7 +82,7 @@ function ManagementUsersMainSection() {
             type="text"
             value={searchInputText}
             onChange={(e) => setSearchInputText(e.currentTarget.value)}
-            placeholder="Search User"
+            placeholder="Search People"
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 setPage(1);
@@ -94,6 +104,7 @@ function ManagementUsersMainSection() {
           </InputRightElement>
         </InputGroup>
       </FormControl>
+
       {searchText && (
         <HStack my={4}>
           <Text>Search results for: {searchText}</Text>
@@ -120,11 +131,12 @@ function ManagementUsersMainSection() {
         }}
         textAlign="center"
       >
-        {data?.map((user: UsersPostSearchUser) => (
-          <UserItem
-            key={`management-user-item-${user.id}`}
-            user={user}
-            onEdit={handleEditUser}
+        {data?.map((person: PersonsPostSearchPersonType) => (
+          <PersonItem
+            refetch={refetch}
+            key={`management-person-item-${person.id}`}
+            person={person}
+            onEdit={handleEditPerson}
           />
         ))}
       </SimpleGrid>
@@ -135,16 +147,17 @@ function ManagementUsersMainSection() {
           totalPages={meta?.totalPage ?? 0}
         />
       </Box>
-      {drawerUser && (
-        <UserDrawer
-          refetch={refetch}
-          isOpen={isDrawerOpen}
-          onClose={onDrawerClose}
-          user={drawerUser}
-        />
-      )}
+      <PersonDrawer
+        refetch={refetch}
+        isOpen={isDrawerOpen}
+        onClose={() => {
+          onDrawerClose();
+          setDrawerPersonId(null);
+        }}
+        personId={drawerPersonId}
+      />
     </>
   );
 }
 
-export default withRole(ManagementUsersMainSection, UserRoleEnum.ADMIN);
+export default withRole(ManagementPersonsMainSection, UserRoleEnum.ADMIN);

@@ -6,6 +6,13 @@ class _FilesService extends BaseService {
     super('/files');
   }
 
+  postPersonsPhoto(data: FormData) {
+    return this.post<FilesPostFileResponseType>('persons/photo', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
   postUsersProfile(data: FormData) {
     return this.post<FilesPostFileResponseType>('users/profile', data, {
       headers: {

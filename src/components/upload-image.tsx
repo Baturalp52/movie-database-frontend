@@ -98,12 +98,14 @@ const UploadImage = ({
           <input {...getInputProps()} />
           {imgPreview && <Image src={imgPreview} alt="Selected image" />}
           <Box
-            position="absolute"
-            top={'50%'}
-            left={'50%'}
-            transform={'translate(-50%,-50%)'}
+            {...(imgPreview && {
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%,-50%)',
+              opacity: isDragActive ? 0.7 : 0,
+            })}
             bgColor="gray.100"
-            opacity={isDragActive ? 0.7 : 0}
             transition={'opacity 0.3s ease'}
             _hover={{
               opacity: 0.7,

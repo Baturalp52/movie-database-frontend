@@ -1,11 +1,11 @@
 import Iconify from '@/components/iconify';
-import { UsersPostSearchUserResponseType } from '@/services/users/users.type';
+import { UsersPostSearchUser } from '@/services/users/users.type';
 import getCDNPath from '@/utils/get-cdn-path.util';
 import { Avatar, HStack, IconButton, Text } from '@chakra-ui/react';
 
 type Props = {
-  user: UsersPostSearchUserResponseType;
-  onEdit: (user: UsersPostSearchUserResponseType) => void;
+  user: UsersPostSearchUser;
+  onEdit: (user: UsersPostSearchUser) => void;
 };
 
 export default function UserItem({ user, onEdit }: Props) {

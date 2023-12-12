@@ -1,6 +1,6 @@
 import { UserRoleEnum } from '@/enums/role.enum';
 import UsersService from '@/services/users/users.service';
-import { UsersPostSearchUserResponseType } from '@/services/users/users.type';
+import { UsersPostSearchUser } from '@/services/users/users.type';
 import getCDNPath from '@/utils/get-cdn-path.util';
 import {
   Avatar,
@@ -23,7 +23,7 @@ import {
 import { useEffect, useState } from 'react';
 
 type Props = {
-  user: UsersPostSearchUserResponseType;
+  user: UsersPostSearchUser;
   isOpen: boolean;
   onClose: () => void;
   refetch: () => void;
