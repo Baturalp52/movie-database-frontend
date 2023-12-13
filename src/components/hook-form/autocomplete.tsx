@@ -15,14 +15,13 @@ type Props<T> = {
   placeholder?: string;
   disableChooseOption?: boolean;
   SelectProps?: SelectProps;
-  options: T[];
-  filter?: AutocompleteProps<T>['filter'];
-  renderOption?: AutocompleteProps<T>['renderOption'];
+  items: T[];
+  autocompleteProps: Omit<AutocompleteProps, 'items' | 'value'>;
 } & Omit<BoxProps, 'filter'>;
 
 export default function RHFAutocomplete<
   T extends Record<string, string> | string,
->({ name, label, options = [], renderOption, filter, ...props }: Props<T>) {
+>({ name, label, items = [], autocompleteProps, ...props }: Props<T>) {
   const { control } = useFormContext();
 
   return (
@@ -38,10 +37,15 @@ export default function RHFAutocomplete<
               </FormLabel>
             )}
             <Autocomplete
+              menuStyle={{
+                zIndex: 9999,
+              }}
               {...field}
-              options={options}
-              filter={filter}
-              renderOption={renderOption}
+              onSelect={(value) => {
+                field.onChange(value);
+              }}
+              {...autocompleteProps}
+              items={items}
             />
             {fieldState?.error && (
               <FormErrorMessage>{fieldState?.error?.message}</FormErrorMessage>

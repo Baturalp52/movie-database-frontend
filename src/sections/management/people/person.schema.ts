@@ -14,6 +14,6 @@ export const personSchema = yup.object().shape({
     .typeError('Gender is required!'),
   bio: yup.string().required('Bio is required!'),
   birthDay: yup.date().required('Birth day is required!'),
-  birthPlace: yup.object().required('Birth place is required!'),
+  birthPlace: yup.string().required('Birth place is required!'),
   knownJob: yup.string().required('Known job is required!'),
 });

@@ -13,6 +13,7 @@ import {
   Text,
   VStack,
   useToast,
+  Card,
 } from '@chakra-ui/react';
 import getCDNPath from '@/utils/get-cdn-path.util';
 import UploadImage from '@/components/upload-image';
@@ -72,11 +73,11 @@ export default function PersonForm({ person, onClose }: Props) {
       const res = await FilesService.postPersonsPhoto(formData);
       data.photoId = res.data?.id;
     }
-    data.birthPlace = (data?.birthPlace as any)?.countryCode;
 
     if ((data as any).photoFile) delete (data as any).photoFile;
 
     if (person?.id) {
+      delete (data as any).id;
       const res = await PersonsService.putPerson(person?.id, data);
       if (res.success) {
         toast({
@@ -144,30 +145,48 @@ export default function PersonForm({ person, onClose }: Props) {
               variant: 'filled',
             }}
           />
+
           <RHFAutocomplete<CountryData>
             name="birthPlace"
             label="Birth Place"
-            options={allCountries()}
-            filter={(option: CountryData, searchText: string) =>
-              option.countryNameEn
-                .toLowerCase()
-                .includes(searchText.toLowerCase()) ||
-              option.countryNameLocal
-                .toLowerCase()
-                .includes(searchText.toLowerCase()) ||
-              option.countryCode
-                .toLowerCase()
-                .includes(searchText.toLowerCase())
-            }
-            renderOption={({ countryCode, countryNameLocal }) => (
-              <HStack>
-                <Iconify
-                  icon={`flag:${countryCode?.toLowerCase()}-4x3`}
-                  boxSize={6}
-                />
-                <Text>{countryNameLocal}</Text>
-              </HStack>
-            )}
+            items={allCountries()}
+            autocompleteProps={{
+              getItemValue(item) {
+                return item.countryCode;
+              },
+              shouldItemRender: (item, inputValue) =>
+                item.countryNameEn
+                  .toLowerCase()
+                  .includes(inputValue.toLowerCase()) ||
+                item.countryNameLocal
+                  .toLowerCase()
+                  .includes(inputValue.toLowerCase()) ||
+                item.countryCode
+                  .toLowerCase()
+                  .includes(inputValue.toLowerCase()),
+              renderItem: (
+                { countryCode, countryNameLocal } = {},
+                isHighlighted,
+              ) => (
+                <Card
+                  bgColor={isHighlighted ? 'gray.400' : 'gray.300'}
+                  _hover={{
+                    cursor: 'pointer',
+                  }}
+                  height="fit-content !important"
+                  my={2}
+                  p={1}
+                >
+                  <HStack key={`country-item-${countryCode}`}>
+                    <Iconify
+                      icon={`flag:${countryCode?.toLowerCase()}-4x3`}
+                      boxSize={6}
+                    />
+                    <Text>{countryNameLocal}</Text>
+                  </HStack>
+                </Card>
+              ),
+            }}
           />
           <RHFInput
             name="birthDay"
