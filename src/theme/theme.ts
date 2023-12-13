@@ -45,5 +45,6 @@ export const theme = extendTheme(
   withDefaultSize({ size: 'md' }),
   withDefaultVariant({
     variant: 'solid',
+    components: ['Button'],
   }),
 );

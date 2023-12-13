@@ -6,6 +6,7 @@ export type PersonsPostSearchPersonType = {
   id: number;
   firstName: string;
   lastName: string;
+  bio: string;
   photoFile: FileType;
   birthPlace: string;
 };
