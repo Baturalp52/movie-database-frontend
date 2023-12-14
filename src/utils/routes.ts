@@ -4,12 +4,19 @@ export const ROUTES = {
   SIGN_UP: '/sign-up',
   USER: {
     ROOT: '/users',
-    DETAIL: (userId: number) => `/users/${userId}`,
+    DETAIL: (userId: string) => `/users/${userId}`,
   },
   SETTINGS: { ROOT: '/profile', SETTINGS: '/profile/settings' },
-  MOVIES: '/movies',
-  PEOPLE: '/people',
-  MOVIE: (movieId: number) => `/movie/${movieId}`,
+  MOVIES: {
+    ROOT: '/movies',
+    SEARCH: (searchParams?: string) =>
+      `/movies${searchParams ? `?${searchParams}` : ''}`,
+    DETAIL: (movieId: string) => `/movies/${movieId}`,
+  },
+  PEOPLE: {
+    ROOT: '/people',
+    DETAIL: (personId: string) => `/people/${personId}`,
+  },
   MANAGEMENT: {
     ROOT: '/management',
     USERS: '/management/users',

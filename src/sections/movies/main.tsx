@@ -66,9 +66,11 @@ export default function MoviesPageMainSection() {
   };
 
   useEffect(() => {
-    const filterObj: Record<string, string | number> = {};
+    const filterObj: Record<string, string | number | number[]> = {};
     searchParams.forEach((value, key) => {
       if (key === 'q') filterObj['text'] = value;
+      else if (key === 'genres')
+        filterObj.genres = value.split(',').map((v) => Number(v));
       else filterObj[key] = isNaN(Number(value)) ? value : parseInt(value);
     });
     setFilter(filterObj);

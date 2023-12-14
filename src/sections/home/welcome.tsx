@@ -10,7 +10,7 @@ export default function HomeWelcomeSection() {
       <Text fontSize="3xl" color="white">
         Lots of movies are here. Start exploring!
       </Text>
-      <SearchBar target="/search" />
+      <SearchBar target="/movies" />
     </Container>
   );
 }

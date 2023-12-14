@@ -66,9 +66,7 @@ export default function ProfileUpdateForm() {
     resolver: yupResolver(profileUpdateSchema) as any,
   });
 
-  const { formState, reset, register, watch } = methods;
-
-  console.log(watch());
+  const { formState, reset, register } = methods;
 
   const { isSubmitting, isValid } = formState;
 

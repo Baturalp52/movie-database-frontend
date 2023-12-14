@@ -24,8 +24,8 @@ export default function MainHeader() {
       </Link>
       <HStack color="white" flex={1}>
         <Link href={ROUTES.HOME}>Home</Link>
-        <Link href={ROUTES.MOVIES}>Movies</Link>
-        <Link href={ROUTES.PEOPLE}>People</Link>
+        <Link href={ROUTES.MOVIES.ROOT}>Movies</Link>
+        <Link href={ROUTES.PEOPLE.ROOT}>People</Link>
       </HStack>
       <HStack color="white">
         <Tooltip label="Add new movie">

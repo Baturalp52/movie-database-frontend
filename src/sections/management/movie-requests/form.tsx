@@ -45,7 +45,6 @@ export default function MovieForm({ movie, refetch, onClose }: Props) {
   const [loading, setLoading] = useState(false);
 
   const toast = useToast();
-  console.log(movie);
   const methods = useForm<MovieType>({
     defaultValues: movie || {},
     mode: 'all',

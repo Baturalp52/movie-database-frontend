@@ -8,6 +8,7 @@ export type BaseMovieType = Pick<
   | 'releaseDate'
   | 'posterPhotoFile'
   | 'originalLanguage'
+  | 'rate'
 >;
 
 export type MoviesGetTrendingMovieResponseType = BaseMovieType[];

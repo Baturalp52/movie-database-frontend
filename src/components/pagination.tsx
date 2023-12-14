@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, ButtonGroup, useBreakpointValue } from '@chakra-ui/react';
 import Iconify from './iconify';
 

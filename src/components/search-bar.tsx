@@ -20,6 +20,8 @@ export default function SearchBar({ target = '' }: Props) {
     <Box width="100%" m={2}>
       <InputGroup>
         <Input
+          variant=""
+          colorScheme="white"
           placeholder="Search movies"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
@@ -27,7 +29,7 @@ export default function SearchBar({ target = '' }: Props) {
         <InputRightElement w="auto">
           <Button
             onClick={() => {
-              push(`${target}?query=${searchText}`);
+              push(`${target}?q=${searchText}`);
             }}
             colorScheme="orange"
             borderTopLeftRadius={20}

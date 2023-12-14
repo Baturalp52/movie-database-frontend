@@ -1,6 +1,9 @@
 import {
+  Box,
   Card,
   CardBody,
+  CircularProgress,
+  CircularProgressLabel,
   Heading,
   Link,
   Stack,
@@ -28,18 +31,19 @@ export default function MovieCard({ movie }: Props) {
     releaseDate: _releaseDate,
     summary,
     originalLanguage,
+    rate,
   } = movie;
   const releaseDate = new Date(_releaseDate);
 
   const tooltipLabel =
     'Original Language: ' +
-      findOne('countryCode' as CountryProperty, originalLanguage)
-        ?.countryNameLocal ?? '';
+      findOne('officialLanguageCode' as CountryProperty, originalLanguage)
+        ?.officialLanguageNameLocal ?? '';
 
   return (
     <Link href={`/movies/${kebabCase(title)}-${id}`}>
       <Card maxW="3xs">
-        <CardBody>
+        <CardBody position="relative">
           <Image
             src={getCDNPath(posterPhotoFile?.path)}
             alt={title}
@@ -62,6 +66,30 @@ export default function MovieCard({ movie }: Props) {
               </Text>
             </Stack>
           </Stack>
+          <Box
+            position="absolute"
+            top={0}
+            right={0}
+            w="fit-content"
+            borderRadius="50%"
+            overflow="hidden"
+            transition="all 0.2s ease-in-out"
+            _hover={{
+              transform: 'scale(1.1)',
+            }}
+          >
+            <CircularProgress
+              size="60px"
+              thickness="4px"
+              color="teal"
+              backgroundColor="white"
+              value={(rate ?? 10) * 10}
+            >
+              <CircularProgressLabel color="teal">
+                {rate ?? 'N/A'}
+              </CircularProgressLabel>
+            </CircularProgress>
+          </Box>
         </CardBody>
       </Card>
     </Link>

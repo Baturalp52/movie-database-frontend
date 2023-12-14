@@ -16,8 +16,8 @@ import { capitalCase } from 'change-case';
 
 const routes = {
   HOME: ROUTES.HOME,
-  MOVIES: ROUTES.MOVIES,
-  PEOPLE: ROUTES.PEOPLE,
+  MOVIES: ROUTES.MOVIES.ROOT,
+  PEOPLE: ROUTES.PEOPLE.ROOT,
 };
 
 export default function MainFooter() {

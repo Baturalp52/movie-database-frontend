@@ -13,6 +13,7 @@ import {
   Link,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
   Skeleton,
@@ -84,8 +85,29 @@ export default function LoginOrUser() {
                   userSelect: 'none',
                 }}
               >
-                Profile
+                View Profile
               </MenuItem>
+              <MenuItem
+                as={Link}
+                href={ROUTES.USER.DETAIL(user?.id)}
+                _hover={{
+                  textDecoration: 'none',
+                  userSelect: 'none',
+                }}
+              >
+                Ratings
+              </MenuItem>
+              <MenuItem
+                as={Link}
+                href={ROUTES.USER.DETAIL(user?.id)}
+                _hover={{
+                  textDecoration: 'none',
+                  userSelect: 'none',
+                }}
+              >
+                Lists
+              </MenuItem>
+              <MenuDivider />
               <MenuItem
                 as={Link}
                 href={ROUTES.SETTINGS.ROOT}
@@ -94,8 +116,19 @@ export default function LoginOrUser() {
                   userSelect: 'none',
                 }}
               >
+                Edit Profile
+              </MenuItem>
+              <MenuItem
+                as={Link}
+                href={ROUTES.SETTINGS.SETTINGS}
+                _hover={{
+                  textDecoration: 'none',
+                  userSelect: 'none',
+                }}
+              >
                 Settings
               </MenuItem>
+              <MenuDivider />
               <MenuItem
                 onClick={() => {
                   logout();

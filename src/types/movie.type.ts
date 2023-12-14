@@ -19,8 +19,10 @@ export type MovieType = {
   budget?: number;
   revenue?: number;
   rate?: number;
+  userRate?: number;
   bannerPhotoFile?: FileType;
   genres?: GenreType[];
   moviePersons?: MoviePersonType[];
   user?: UserType;
+  keywords?: string[];
 };

@@ -13,6 +13,8 @@ import {
   Text,
   VStack,
   Box,
+  FormControl,
+  FormLabel,
 } from '@chakra-ui/react';
 import getCDNPath from '@/utils/get-cdn-path.util';
 import UploadImage from '@/components/upload-image';
@@ -36,6 +38,7 @@ import RHFNumberInput from '@/components/hook-form/number-input';
 import Genres from './genres';
 import { GenreType } from '@/types/genre.type';
 import People from './people';
+import { CreatableSelect } from 'chakra-react-select';
 
 type Props = {
   movie: MovieType | null;
@@ -60,7 +63,9 @@ export default function MovieForm({ movie, onSubmit, onClose }: Props) {
     resolver: yupResolver(movieSchema) as any,
   });
 
-  const { formState, reset, trigger } = methods;
+  const { formState, reset, trigger, setValue, watch } = methods;
+
+  const keywords = watch('keywords');
 
   const { isSubmitting, isValid, errors } = formState;
   useEffect(() => {
@@ -375,6 +380,29 @@ export default function MovieForm({ movie, onSubmit, onClose }: Props) {
               max: 59,
             }}
           />
+          <FormControl>
+            <FormLabel>Key words</FormLabel>
+            <CreatableSelect
+              isMulti
+              value={keywords?.map((keyword) => ({
+                label: keyword,
+                value: keyword,
+              }))}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.stopPropagation();
+                }
+              }}
+              options={[]}
+              onChange={(values) => {
+                setValue(
+                  'keywords',
+                  values.map((value: any) => value.value),
+                );
+              }}
+            />
+          </FormControl>
+
           <Genres />
           <People persons={persons} setPersons={setPersons} />
         </VStack>
