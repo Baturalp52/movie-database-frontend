@@ -9,21 +9,44 @@ import { profileUpdateSchema } from './profile.schema';
 import { ProfilePutProfileRequestType } from '@/services/profile/profile.type';
 import { UserType } from '@/types/user.type';
 import RHFTextarea from '@/components/hook-form/textarea';
-import { Button, Grid, GridItem, VStack, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Grid,
+  GridItem,
+  Heading,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  SimpleGrid,
+  VStack,
+  useToast,
+} from '@chakra-ui/react';
 import UploadAvatar from '@/components/upload-avatar';
 import getCDNPath from '@/utils/get-cdn-path.util';
 import UploadImage from '@/components/upload-image';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { PROFILE_BANNER_RATIO } from '@/constants/profile-banner-ratio.constant';
 import RHFDropdown from '@/components/hook-form/dropdown';
 import { GenderEnum } from '@/enums/gender.enum';
 import { capitalCase } from 'change-case';
 import FilesService from '@/services/files/files.service';
 import ProfileService from '@/services/profile/profile.service';
+import SocialMediaItemsService from '@/services/social-media-items/social-media-items.service';
+import useFetch from '@/hooks/use-fetch';
+import Iconify from '@/components/iconify';
 
 export default function ProfileUpdateForm() {
   const toast = useToast();
   const { user, init: reinitUser } = useAuth();
+
+  const fetchSocialMediaItems = useCallback(
+    async () => SocialMediaItemsService.getAllSocialMediaItems(),
+    [],
+  );
+
+  const { data: socialMediaItems } = useFetch(fetchSocialMediaItems);
+
   const [newBannerPhotoFile, setNewBannerPhotoFile] = useState<File | null>(
     null,
   );
@@ -43,7 +66,9 @@ export default function ProfileUpdateForm() {
     resolver: yupResolver(profileUpdateSchema) as any,
   });
 
-  const { formState, reset } = methods;
+  const { formState, reset, register, watch } = methods;
+
+  console.log(watch());
 
   const { isSubmitting, isValid } = formState;
 
@@ -53,10 +78,28 @@ export default function ProfileUpdateForm() {
       lastName: user?.lastName,
       bio: user?.bio,
       gender: user?.gender,
+      socialMediaItems: socialMediaItems?.map((socialMediaItem) => {
+        const socialMediaItemUrl = user?.socialMediaItems?.find(
+          (userSocialMediaItem) =>
+            userSocialMediaItem.id === socialMediaItem.id,
+        )?.url;
+
+        return {
+          id: socialMediaItem.id,
+          url: socialMediaItemUrl,
+        };
+      }),
     });
-  }, [reset, user]);
+  }, [reset, socialMediaItems, user]);
 
   const handleSubmit = async (data: ProfilePutProfileRequestType) => {
+    data.socialMediaItems = data.socialMediaItems
+      ?.filter((socialMediaItem) => socialMediaItem.url)
+      ?.map((socialMediaItem) => ({
+        id: +socialMediaItem.id,
+        url: socialMediaItem.url,
+      }));
+
     if (newBannerPhotoFile) {
       const formData = new FormData();
       formData.append('file', newBannerPhotoFile);
@@ -151,6 +194,41 @@ export default function ProfileUpdateForm() {
                 </option>
               )}
             />
+          </VStack>
+        </GridItem>
+        <GridItem colSpan={3}>
+          <VStack alignItems="stretch">
+            <Heading size="md" textAlign="left">
+              Social Media
+            </Heading>
+            <SimpleGrid
+              columns={{
+                base: 1,
+                sm: 2,
+                md: 3,
+              }}
+              spacing={4}
+            >
+              {socialMediaItems?.map((socialMediaItem, index) => (
+                <Box key={`profile-social-media-${socialMediaItem.id}`}>
+                  <input
+                    type="hidden"
+                    {...register(`socialMediaItems.${index}.id` as any)}
+                    value={socialMediaItem.id}
+                  />
+                  <InputGroup>
+                    <InputLeftAddon>
+                      <Iconify icon={socialMediaItem.icon} boxSize={6} />
+                    </InputLeftAddon>
+                    <Input
+                      variant="filled"
+                      {...register(`socialMediaItems.${index}.url` as any)}
+                      placeholder={socialMediaItem.name}
+                    />
+                  </InputGroup>
+                </Box>
+              ))}
+            </SimpleGrid>
           </VStack>
         </GridItem>
         <GridItem colSpan={2} />

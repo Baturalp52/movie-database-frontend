@@ -10,6 +10,11 @@ export type ProfilePutProfileResponseType = Omit<
   bannerPhotoId?: number;
 };
 
+type UserSocialMediaItem = {
+  id: number;
+  url: string;
+};
+
 export type ProfilePutProfileRequestType = {
   firstName?: string;
   lastName?: string;
@@ -17,6 +22,7 @@ export type ProfilePutProfileRequestType = {
   gender?: number;
   profilePhotoId?: number;
   bannerPhotoId?: number;
+  socialMediaItems?: UserSocialMediaItem[];
 };
 export type ProfilePutProfileAuthRequestType = {
   username?: string;
