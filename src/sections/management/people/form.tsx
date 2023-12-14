@@ -13,7 +13,6 @@ import {
   Text,
   VStack,
   useToast,
-  Card,
 } from '@chakra-ui/react';
 import getCDNPath from '@/utils/get-cdn-path.util';
 import UploadImage from '@/components/upload-image';
@@ -30,7 +29,7 @@ import {
 } from '@/services/persons/person.type';
 import PersonsService from '@/services/persons/persons.service';
 import { personSchema } from './person.schema';
-import RHFAutocomplete from '@/components/hook-form/autocomplete';
+import RHFCombobox from '@/components/hook-form/combobox';
 import { CountryData, all as allCountries } from 'country-codes-list';
 import Iconify from '@/components/iconify';
 
@@ -75,6 +74,7 @@ export default function PersonForm({ person, onClose }: Props) {
     }
 
     if ((data as any).photoFile) delete (data as any).photoFile;
+    data.birthPlace = (data as any).birthPlace?.countryCode;
 
     if (person?.id) {
       delete (data as any).id;
@@ -146,46 +146,58 @@ export default function PersonForm({ person, onClose }: Props) {
             }}
           />
 
-          <RHFAutocomplete<CountryData>
+          <RHFCombobox<CountryData>
             name="birthPlace"
             label="Birth Place"
-            items={allCountries()}
-            autocompleteProps={{
-              getItemValue(item) {
-                return item.countryCode;
+            options={allCountries()}
+            selectProps={{
+              getOptionLabel(item: any) {
+                return item.countryNameLocal;
               },
-              shouldItemRender: (item, inputValue) =>
-                item.countryNameEn
-                  .toLowerCase()
-                  .includes(inputValue.toLowerCase()) ||
-                item.countryNameLocal
-                  .toLowerCase()
-                  .includes(inputValue.toLowerCase()) ||
-                item.countryCode
-                  .toLowerCase()
-                  .includes(inputValue.toLowerCase()),
-              renderItem: (
-                { countryCode, countryNameLocal } = {},
-                isHighlighted,
-              ) => (
-                <Card
-                  bgColor={isHighlighted ? 'gray.400' : 'gray.300'}
-                  _hover={{
-                    cursor: 'pointer',
-                  }}
-                  height="fit-content !important"
-                  my={2}
-                  p={1}
-                >
-                  <HStack key={`country-item-${countryCode}`}>
+              filterOption: ({ data }: any, inputValue) =>
+                data?.countryNameEn
+                  ?.toLowerCase()
+                  ?.includes(inputValue?.toLowerCase()) ||
+                data?.countryNameLocal
+                  ?.toLowerCase()
+                  ?.includes(inputValue?.toLowerCase()) ||
+                data?.countryCode
+                  ?.toLowerCase()
+                  ?.includes(inputValue?.toLowerCase()),
+              components: {
+                Option: ({ data, innerProps }: any) => (
+                  <HStack
+                    {...innerProps}
+                    key={`country-item-${data?.countryCode}`}
+                    _hover={{
+                      cursor: 'pointer',
+                    }}
+                    m={2}
+                  >
                     <Iconify
-                      icon={`flag:${countryCode?.toLowerCase()}-4x3`}
+                      icon={`flag:${data?.countryCode?.toLowerCase()}-4x3`}
                       boxSize={6}
                     />
-                    <Text>{countryNameLocal}</Text>
+                    <Text>{data?.countryNameLocal}</Text>
                   </HStack>
-                </Card>
-              ),
+                ),
+                SingleValue: ({ data }: any) => (
+                  <HStack
+                    key={`country-item-${data?.countryCode}`}
+                    _hover={{
+                      cursor: 'pointer',
+                    }}
+                    m={2}
+                  >
+                    <Iconify
+                      icon={`flag:${data?.countryCode?.toLowerCase()}-4x3`}
+                      boxSize={6}
+                    />
+
+                    <Text>{data?.countryNameLocal}</Text>
+                  </HStack>
+                ),
+              },
             }}
           />
           <RHFInput

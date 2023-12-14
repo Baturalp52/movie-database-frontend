@@ -1,9 +1,6 @@
-import { MovieType } from '@/types/movie.type';
 import {
   Card,
   CardBody,
-  CardFooter,
-  Divider,
   Heading,
   Link,
   Stack,
@@ -17,9 +14,10 @@ import TextMaxLine from '../text-max-line';
 import Iconify from '../iconify';
 import { formatDate } from '@/utils/format-date.util';
 import { CountryProperty, findOne } from 'country-codes-list';
+import { BaseMovieType } from '@/services/movies/movie.type';
 
 type Props = {
-  movie: MovieType;
+  movie: BaseMovieType;
 };
 
 export default function MovieCard({ movie }: Props) {
@@ -65,8 +63,6 @@ export default function MovieCard({ movie }: Props) {
             </Stack>
           </Stack>
         </CardBody>
-        <Divider />
-        <CardFooter></CardFooter>
       </Card>
     </Link>
   );

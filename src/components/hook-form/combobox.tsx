@@ -4,24 +4,26 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  SelectProps,
 } from '@chakra-ui/react';
 import { Controller, useFormContext } from 'react-hook-form';
-import Autocomplete, { AutocompleteProps } from '../autocomplete';
+import { Select, Props as SelectProps } from 'chakra-react-select';
 
 type Props<T> = {
   name: string;
   label?: string;
   placeholder?: string;
   disableChooseOption?: boolean;
-  SelectProps?: SelectProps;
-  items: T[];
-  autocompleteProps: Omit<AutocompleteProps, 'items' | 'value'>;
+  options: T[];
+  selectProps: Omit<SelectProps, 'items' | 'value'>;
 } & Omit<BoxProps, 'filter'>;
 
-export default function RHFAutocomplete<
-  T extends Record<string, string> | string,
->({ name, label, items = [], autocompleteProps, ...props }: Props<T>) {
+export default function RHFCombobox<T extends Record<string, string> | string>({
+  name,
+  label,
+  options = [],
+  selectProps,
+  ...props
+}: Props<T>) {
   const { control } = useFormContext();
 
   return (
@@ -36,17 +38,7 @@ export default function RHFAutocomplete<
                 {label}
               </FormLabel>
             )}
-            <Autocomplete
-              menuStyle={{
-                zIndex: 9999,
-              }}
-              {...field}
-              onSelect={(value) => {
-                field.onChange(value);
-              }}
-              {...autocompleteProps}
-              items={items}
-            />
+            <Select {...field} {...selectProps} options={options} />
             {fieldState?.error && (
               <FormErrorMessage>{fieldState?.error?.message}</FormErrorMessage>
             )}

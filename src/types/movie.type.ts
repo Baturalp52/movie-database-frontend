@@ -2,6 +2,7 @@ import { CertificationEnum } from '@/enums/certification.enum';
 import { FileType } from './file.type';
 import { GenreType } from './genre.type';
 import { MoviePersonType } from './movie-person.type';
+import { UserType } from './user.type';
 
 export type MovieType = {
   id: number;
@@ -21,4 +22,5 @@ export type MovieType = {
   bannerPhotoFile?: FileType;
   genres?: GenreType[];
   moviePersons?: MoviePersonType[];
+  user?: UserType;
 };

@@ -13,6 +13,7 @@ import {
 import { useCallback, useEffect, useState } from 'react';
 import PersonForm from './form';
 import LoadingLogo from '@/components/loading-logo';
+import { CountryProperty, filter as filterCountries } from 'country-codes-list';
 
 type Props = {
   personId: number | null;
@@ -40,6 +41,10 @@ export default function PersonDrawer({
         res.data.birthDay = new Date(res.data.birthDay)
           .toISOString()
           .split('T')[0] as any;
+        res.data.birthPlace = filterCountries(
+          'countryCode' as CountryProperty,
+          res.data.birthPlace ?? '',
+        )[0] as any;
         setPerson(res.data);
       }
     }
