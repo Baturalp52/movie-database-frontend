@@ -44,13 +44,26 @@ type Props = {
 };
 
 export default function MovieBannerSection({ movie, refetch }: Props) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isPosterModalOpen,
+    onOpen: onPosterModalOpen,
+    onClose: onPosterModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isTrailerModalOpen,
+    onOpen: onTrailerModalOpen,
+    onClose: onTrailerModalClose,
+  } = useDisclosure();
   const { user } = useAuth();
   const releaseDate = new Date(movie?.releaseDate);
   const runtimeHours = Math.floor((movie?.runtime ?? 0) / 3600);
   const runtimeMinutes = Math.floor(((movie?.runtime ?? 0) / 60) % 60);
   const runtime = `${runtimeHours}h ${runtimeMinutes}m`;
   const toast = useToast();
+
+  const embedIdRegex =
+    /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  const embedId = movie?.trailer?.match(embedIdRegex)?.[1];
 
   const [userRate, setUserRate] = useState(0);
 
@@ -147,7 +160,7 @@ export default function MovieBannerSection({ movie, refetch }: Props) {
                   opacity={0}
                   transition="opacity 0.3s"
                   _hover={{ opacity: 0.7, cursor: 'pointer' }}
-                  onClick={onOpen}
+                  onClick={onPosterModalOpen}
                 >
                   <Stack
                     spacing={2}
@@ -239,7 +252,7 @@ export default function MovieBannerSection({ movie, refetch }: Props) {
                       </MenuGroup>
                     </MenuList>
                   </Menu>
-                  <Button colorScheme="orange">
+                  <Button colorScheme="orange" onClick={onTrailerModalOpen}>
                     <Iconify icon="mdi:play" boxSize={6} />
                     Play Trailer
                   </Button>
@@ -280,7 +293,7 @@ export default function MovieBannerSection({ movie, refetch }: Props) {
           </Grid>
         </Box>
       </Box>
-      <Modal isOpen={isOpen} onClose={onClose} size="3xl">
+      <Modal isOpen={isPosterModalOpen} onClose={onPosterModalClose} size="3xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -288,6 +301,29 @@ export default function MovieBannerSection({ movie, refetch }: Props) {
           </ModalHeader>
           <ModalBody py={4}>
             <Image src={getCDNPath(movie?.posterPhotoFile?.path ?? '')} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={isTrailerModalOpen}
+        onClose={onTrailerModalClose}
+        size="3xl"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            <ModalCloseButton />
+          </ModalHeader>
+          <ModalBody py={4}>
+            <iframe
+              width="100%"
+              height="480"
+              src={`https://www.youtube.com/embed/${embedId}`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="Embedded youtube"
+            />
           </ModalBody>
         </ModalContent>
       </Modal>

@@ -114,6 +114,8 @@ export default function MovieForm({ movie, onSubmit, onClose }: Props) {
       personTypes: person.personTypes.map((personType: any) => personType.id),
     })) as any;
 
+    delete data.userRate;
+
     await onSubmit(data);
 
     onClose();
