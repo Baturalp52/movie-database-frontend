@@ -8,7 +8,7 @@ type Props = {
   methods: UseFormReturn<any>;
   onSubmit: (data: any) => void | Promise<void> | Promise<any> | void;
   children: React.ReactNode;
-} & FormHTMLAttributes<HTMLFormElement>;
+} & Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit'>;
 
 export default function FormProvider({
   methods,

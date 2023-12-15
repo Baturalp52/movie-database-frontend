@@ -79,7 +79,7 @@ export default function LoginOrUser() {
             <MenuList>
               <MenuItem
                 as={Link}
-                href={ROUTES.USER.DETAIL(user?.id)}
+                href={ROUTES.USER.DETAIL('' + user?.id)}
                 _hover={{
                   textDecoration: 'none',
                   userSelect: 'none',
@@ -89,7 +89,7 @@ export default function LoginOrUser() {
               </MenuItem>
               <MenuItem
                 as={Link}
-                href={ROUTES.USER.DETAIL(user?.id)}
+                href={ROUTES.RATINGS}
                 _hover={{
                   textDecoration: 'none',
                   userSelect: 'none',
@@ -99,7 +99,7 @@ export default function LoginOrUser() {
               </MenuItem>
               <MenuItem
                 as={Link}
-                href={ROUTES.USER.DETAIL(user?.id)}
+                href={ROUTES.USER.DETAIL('' + user?.id)}
                 _hover={{
                   textDecoration: 'none',
                   userSelect: 'none',
