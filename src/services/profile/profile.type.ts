@@ -1,5 +1,7 @@
 import { UserType } from '@/types/user.type';
+import { BaseMovieListType } from '../movie-lists/movie-lists.type';
 
+export type ProfileGetProfileMovieListsResponseType = BaseMovieListType;
 export type ProfileGetProfileResponseType = UserType;
 
 export type ProfilePutProfileResponseType = Omit<

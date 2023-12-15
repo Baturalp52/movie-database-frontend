@@ -3,7 +3,13 @@ import Image from '@/components/image';
 import StarRating from '@/components/star-rating';
 import { CertificationEnum } from '@/enums/certification.enum';
 import useAuth from '@/hooks/use-auth';
+import useFetch from '@/hooks/use-fetch';
+import MovieListModal from '@/modals/movie-list/movie-list';
+import { BaseResponse } from '@/services/base.service';
+import MovieListsMoviesService from '@/services/movie-lists-movies/movie-lists-moviess.service';
+import { BaseMovieListType } from '@/services/movie-lists/movie-lists.type';
 import MovieRatesService from '@/services/movie-rates/movie-rates.service';
+import ProfileService from '@/services/profile/profile.service';
 import { MovieType } from '@/types/movie.type';
 import { formatDate } from '@/utils/format-date.util';
 import getCDNPath from '@/utils/get-cdn-path.util';
@@ -17,6 +23,7 @@ import {
   Grid,
   GridItem,
   HStack,
+  Heading,
   IconButton,
   Link,
   Menu,
@@ -28,6 +35,7 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Stack,
@@ -36,7 +44,7 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 type Props = {
   movie: MovieType;
@@ -54,7 +62,34 @@ export default function MovieBannerSection({ movie, refetch }: Props) {
     onOpen: onTrailerModalOpen,
     onClose: onTrailerModalClose,
   } = useDisclosure();
+  const {
+    isOpen: isNewListModalOpen,
+    onOpen: onNewListModalOpen,
+    onClose: onNewListModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isLoginModalOpen,
+    onOpen: onLoginModalOpen,
+    onClose: onLoginModalClose,
+  } = useDisclosure();
+
   const { user } = useAuth();
+
+  const fetchMovieLists = useCallback(
+    () =>
+      user?.id
+        ? ProfileService.getProfileMovieLists()
+        : (async () =>
+            ({
+              success: true,
+              data: [],
+            }) as BaseResponse<BaseMovieListType[]>)(),
+
+    [user?.id],
+  );
+
+  const { data: movieLists = [] } = useFetch(fetchMovieLists);
+
   const releaseDate = new Date(movie?.releaseDate);
   const runtimeHours = Math.floor((movie?.runtime ?? 0) / 3600);
   const runtimeMinutes = Math.floor(((movie?.runtime ?? 0) / 60) % 60);
@@ -124,6 +159,31 @@ export default function MovieBannerSection({ movie, refetch }: Props) {
     }
 
     setUserRate(0);
+  };
+
+  const handleNewMovieList = () => {
+    onNewListModalOpen();
+  };
+
+  const handleAddMovieToList = (movieListId: number) => async () => {
+    const res = await MovieListsMoviesService.postMovie(movieListId, movie.id);
+    if (res.success) {
+      toast({
+        title: 'Success',
+        description: 'Movie added to list',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: 'Error',
+        description: res.errorMessage,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   useEffect(() => {
@@ -232,23 +292,46 @@ export default function MovieBannerSection({ movie, refetch }: Props) {
                   </Box>
                   <Text>User Rating</Text>
                   <Menu>
-                    <Tooltip label="Add to watchlist">
-                      <IconButton
-                        as={MenuButton}
-                        isRound
-                        aria-label="Add to watchlist"
-                        variant="ghost"
-                        icon={<Iconify mx="auto" icon="mdi:plus" boxSize={8} />}
-                      />
+                    <Tooltip label="Add to movie list">
+                      {user ? (
+                        <IconButton
+                          as={MenuButton}
+                          isRound
+                          aria-label="Add to movie list"
+                          variant="ghost"
+                          icon={
+                            <Iconify mx="auto" icon="mdi:plus" boxSize={8} />
+                          }
+                        />
+                      ) : (
+                        <IconButton
+                          onClick={onLoginModalOpen}
+                          isRound
+                          aria-label="Add to movie list"
+                          variant="ghost"
+                          icon={
+                            <Iconify mx="auto" icon="mdi:plus" boxSize={8} />
+                          }
+                        />
+                      )}
                     </Tooltip>
                     <MenuList color="black">
-                      <MenuItem icon={<Iconify icon="mdi:plus" boxSize={6} />}>
+                      <MenuItem
+                        icon={<Iconify icon="mdi:plus" boxSize={6} />}
+                        onClick={handleNewMovieList}
+                      >
                         New List
                       </MenuItem>
                       <MenuGroup title="My Lists">
-                        <MenuItem icon={<Iconify icon="gg:list" boxSize={6} />}>
-                          List 1
-                        </MenuItem>
+                        {movieLists?.map((movieList) => (
+                          <MenuItem
+                            key={`movie-list-${movieList.id}`}
+                            icon={<Iconify icon="gg:list" boxSize={6} />}
+                            onClick={handleAddMovieToList(movieList.id)}
+                          >
+                            {movieList.name}
+                          </MenuItem>
+                        ))}
                       </MenuGroup>
                     </MenuList>
                   </Menu>
@@ -325,6 +408,33 @@ export default function MovieBannerSection({ movie, refetch }: Props) {
               title="Embedded youtube"
             />
           </ModalBody>
+        </ModalContent>
+      </Modal>
+      <MovieListModal
+        isOpen={isNewListModalOpen}
+        onClose={onNewListModalClose}
+        movieList={null}
+        cb={refetch}
+      />
+      <Modal isOpen={isLoginModalOpen} onClose={onLoginModalClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            <ModalCloseButton />
+          </ModalHeader>
+          <ModalBody py={4}>
+            <Heading>
+              You must be logged in to add a movie to your list!
+            </Heading>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="orange" as="a" href={ROUTES.SIGN_UP} mr={4}>
+              Register
+            </Button>
+            <Button as="a" href={ROUTES.LOGIN}>
+              Login
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

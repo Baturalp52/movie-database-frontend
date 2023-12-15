@@ -1,5 +1,6 @@
 import BaseService from '../base.service';
 import {
+  ProfileGetProfileMovieListsResponseType,
   ProfileGetProfileResponseType,
   ProfilePutProfileAuthRequestType,
   ProfilePutProfileRequestType,
@@ -18,6 +19,9 @@ class _ProfileService extends BaseService {
   }
   putProfileAuth(data: ProfilePutProfileAuthRequestType) {
     return this.put('auth', data);
+  }
+  getProfileMovieLists() {
+    return this.get<ProfileGetProfileMovieListsResponseType[]>('movie-lists');
   }
 }
 const ProfileService = new _ProfileService();

@@ -16,9 +16,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = Number(params.id.split('-').pop());
   if (isNaN(id)) notFound();
 
-  // fetch data
   const movieRes: any = await axiosInstanceSSR.get(`/movies/${id}`);
-
+  console.log(movieRes);
   if (!movieRes.success) {
     notFound();
   }

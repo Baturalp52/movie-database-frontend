@@ -3,6 +3,7 @@ export const ROUTES = {
   LOGIN: '/login',
   SIGN_UP: '/sign-up',
   RATINGS: '/ratings',
+  LISTS: { ROOT: '/lists', DETAIL: (listId: string) => `/lists/${listId}` },
   USER: {
     ROOT: '/users',
     DETAIL: (userId: string) => `/users/${userId}`,
