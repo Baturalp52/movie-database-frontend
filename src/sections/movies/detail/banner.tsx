@@ -196,7 +196,7 @@ export default function MovieBannerSection({ movie, refetch }: Props) {
         backgroundImage={`url(${getCDNPath(
           movie?.bannerPhotoFile?.path ?? '',
         )})`}
-        backgroundSize="contain"
+        backgroundSize="cover"
         backgroundPosition="center"
         backgroundRepeat="no-repeat"
         w="100%"

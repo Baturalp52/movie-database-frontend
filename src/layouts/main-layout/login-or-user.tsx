@@ -20,6 +20,7 @@ import {
   Text,
   Tooltip,
 } from '@chakra-ui/react';
+import { kebabCase } from 'change-case';
 import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -79,7 +80,15 @@ export default function LoginOrUser() {
             <MenuList>
               <MenuItem
                 as={Link}
-                href={ROUTES.USER.DETAIL('' + user?.id)}
+                href={ROUTES.USER.DETAIL(
+                  kebabCase(
+                    (user?.firstName && user?.lastName
+                      ? user?.firstName + ' ' + user?.lastName
+                      : user?.auth?.username) +
+                      ' ' +
+                      user?.id,
+                  ),
+                )}
                 _hover={{
                   textDecoration: 'none',
                   userSelect: 'none',

@@ -37,8 +37,8 @@ export default function UserDetailMainSection({ userId }: Props) {
   return (
     <Box my={4}>
       <UserBannerSection user={data} />
-      <Grid templateColumns="repeat(4,1fr)" gap={4} p={4}>
-        <GridItem colSpan={3}>
+      <Grid templateColumns="repeat(5,1fr)" gap={4} p={4}>
+        <GridItem colSpan={4}>
           <DetailsSection user={data} />
         </GridItem>
         <GridItem>

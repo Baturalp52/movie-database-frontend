@@ -37,7 +37,7 @@ export default function UserBannerSection({ user }: Props) {
         backgroundImage={`url(${getCDNPath(
           user?.bannerPhotoFile?.path ?? '',
         )})`}
-        backgroundSize="contain"
+        backgroundSize="cover"
         backgroundPosition="center"
         backgroundRepeat="no-repeat"
         w="100%"
