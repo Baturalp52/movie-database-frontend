@@ -31,37 +31,32 @@ export default function RHFSwitch({
     <Controller
       control={control}
       name={name}
-      render={({ field, fieldState }) => {
-        console.log(field);
-        return (
-          <Box {...props}>
-            <FormControl
+      render={({ field, fieldState }) => (
+        <Box {...props}>
+          <FormControl
+            isInvalid={fieldState?.invalid}
+            {...FormControlProps}
+            as={HStack}
+            alignItems="center"
+          >
+            {label && (
+              <FormLabel color={fieldState?.error ? 'red.500' : 'inherit'}>
+                {label}
+              </FormLabel>
+            )}
+            <Switch
+              id={name}
               isInvalid={fieldState?.invalid}
-              {...FormControlProps}
-              as={HStack}
-              alignItems="center"
-            >
-              {label && (
-                <FormLabel color={fieldState?.error ? 'red.500' : 'inherit'}>
-                  {label}
-                </FormLabel>
-              )}
-              <Switch
-                id={name}
-                isInvalid={fieldState?.invalid}
-                {...field}
-                isChecked={field.value}
-                {...SwitchProps}
-              />
-              {fieldState?.error && (
-                <FormErrorMessage>
-                  {fieldState?.error?.message}
-                </FormErrorMessage>
-              )}
-            </FormControl>
-          </Box>
-        );
-      }}
+              {...field}
+              isChecked={field.value}
+              {...SwitchProps}
+            />
+            {fieldState?.error && (
+              <FormErrorMessage>{fieldState?.error?.message}</FormErrorMessage>
+            )}
+          </FormControl>
+        </Box>
+      )}
     />
   );
 }

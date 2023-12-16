@@ -35,8 +35,11 @@ import {
 import { useCallback, useState } from 'react';
 
 function ListsPageMainSection() {
-  const { isOpen: isMovieDetailOpen, onOpen: onMovieDetailOpen } =
-    useDisclosure();
+  const {
+    isOpen: isMovieDetailOpen,
+    onOpen: onMovieDetailOpen,
+    onClose: onMovieDetailClose,
+  } = useDisclosure();
   const {
     isOpen: isMovieListModalOpen,
     onOpen: onMovieListModalOpen,
@@ -47,6 +50,7 @@ function ListsPageMainSection() {
 
   const [movieListDetail, setMovieListDetail] =
     useState<MovieListType | null>();
+
   const fetchLists = useCallback(
     async () => ProfileService.getProfileMovieLists(),
     [],
@@ -60,6 +64,11 @@ function ListsPageMainSection() {
   };
 
   const handleViewListDetail = (id: number) => async () => {
+    if (id === movieListDetail?.id && isMovieDetailOpen) {
+      onMovieDetailClose();
+      return;
+    }
+
     const res = await MovieListsService.getMovieList(id);
     if (res.success) {
       setMovieListDetail(res.data);

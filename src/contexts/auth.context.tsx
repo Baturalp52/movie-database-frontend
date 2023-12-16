@@ -36,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     if (localStorage.getItem('token')) {
       const userRes = await ProfileService.getProfile();
-      setUser(userRes.data || null);
+      setUser(userRes?.data || null);
     } else {
       setUser(null);
     }

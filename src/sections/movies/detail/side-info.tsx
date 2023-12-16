@@ -1,7 +1,10 @@
 import Iconify from '@/components/iconify';
 import { MovieType } from '@/types/movie.type';
 import { formatDate } from '@/utils/format-date.util';
-import { Box, HStack, Tag, Text, VStack } from '@chakra-ui/react';
+import getCDNPath from '@/utils/get-cdn-path.util';
+import { ROUTES } from '@/utils/routes';
+import { Avatar, Box, HStack, Link, Tag, Text, VStack } from '@chakra-ui/react';
+import { kebabCase } from 'change-case';
 import { CountryProperty, filter as filterCountries } from 'country-codes-list';
 
 type Props = {
@@ -19,6 +22,8 @@ export default function SideInfoSection({ movie }: Props) {
   )[0];
 
   const releaseDate = new Date(movie?.releaseDate ?? '');
+
+  const { user } = movie;
 
   return (
     <VStack alignItems="flex-start">
@@ -67,6 +72,44 @@ export default function SideInfoSection({ movie }: Props) {
               {keyword}
             </Tag>
           ))}
+        </Box>
+      )}
+      {!!user && (
+        <Box>
+          <Text fontWeight="bold">Adder User:</Text>
+          <Link
+            variant="ghost"
+            href={ROUTES.USER.DETAIL(
+              kebabCase(
+                (user?.firstName && user?.lastName
+                  ? user?.firstName + ' ' + user?.lastName
+                  : user?.detail?.username) +
+                  ' ' +
+                  user?.id,
+              ),
+            )}
+          >
+            <HStack>
+              <Avatar
+                size="sm"
+                name={
+                  user?.firstName && user?.lastName
+                    ? user?.firstName + ' ' + user?.lastName
+                    : user?.auth?.username
+                }
+                src={
+                  user?.profilePhotoFile?.path
+                    ? getCDNPath(user?.profilePhotoFile?.path)
+                    : ''
+                }
+              />
+              <Text>
+                {user?.firstName && user?.lastName
+                  ? user?.firstName + ' ' + user?.lastName
+                  : '@' + user?.auth?.username}
+              </Text>
+            </HStack>
+          </Link>
         </Box>
       )}
     </VStack>

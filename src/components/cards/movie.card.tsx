@@ -41,7 +41,7 @@ export default function MovieCard({ movie }: Props) {
         ?.officialLanguageNameLocal ?? '';
 
   return (
-    <Link href={`/movies/${kebabCase(title)}-${id}`}>
+    <Link href={`/movies/${kebabCase(title)}-${id}`} m={2}>
       <Card maxW="3xs">
         <CardBody position="relative">
           <Image
@@ -51,7 +51,9 @@ export default function MovieCard({ movie }: Props) {
           />
           <Stack mt="2" spacing="3">
             <Heading size="md">{title}</Heading>
-            <TextMaxLine fontSize="2xs">{summary}</TextMaxLine>
+            <TextMaxLine maxLines={1} fontSize="2xs">
+              {summary}
+            </TextMaxLine>
             <Stack direction="row" alignItems="center" spacing="2">
               <Tooltip label={tooltipLabel} aria-label={tooltipLabel}>
                 <div>
